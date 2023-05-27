@@ -1,4 +1,4 @@
-# NaturopuraV1
+# About Naturopura
 
 The system works along with the natural biodiversity of each farmed area, encouraging the complexity of living organisms—both plant and animal—that shape each particular ecosystem to thrive along with food plants.
 Natural farming is related to fertility farming, organic farming, and biodynamic agriculture.
