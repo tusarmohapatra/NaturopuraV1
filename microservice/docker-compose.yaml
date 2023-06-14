@@ -4,27 +4,34 @@ services:
 
   mysql:
     image: mysql:5.7
-    restart: always
+    container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: naturopura_main
-      MYSQL_USER: db_user
-      MYSQL_PASSWORD: user
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: pass
+      MYSQL_PASSWORD: pass
     ports:
-      - "6033:3306"
+      - "3306:3306"
     volumes:
       - data:/var/lib/mysql
-    
+    networks:
+      - backend_network
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
-    restart: always
-    ports:
-      - 8080:80
-    environment:
-      PMA_HOST: mysql
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
     depends_on:
       - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_USER: pass
+      MYSQL_PASSWORD: pass
+    restart: always
+    ports:
+      - "8080:80"
+    networks:
+      - backend_network
 
   rabbitmq:
     image: rabbitmq:3.10-rc-management-alpine
@@ -51,42 +58,10 @@ services:
     depends_on:
       - mysql
       - rabbitmq
-
-  products:
-    build:
-      context: ./products
-      args:
-        - NODE_ENV=development
-      target: dev
-    ports:
-      - "3002:3002"
-    volumes:
-      - ./products:/app/
-    environment:
-      - SERVICE=products
-    env_file:
-      - ./products/.env
-    depends_on:
-      - mysql
-      - rabbitmq
-
-  orders:
-    build:
-      context: ./orders
-      args:
-        - NODE_ENV=development
-      target: dev
-    ports:
-      - "3003:3003"
-    volumes:
-      - ./orders:/app/
-    environment:
-      - SERVICE=orders
-    env_file:
-      - ./orders/.env
-    depends_on:
-      - mysql
-      - rabbitmq
+      
+networks:
+  backend_network:
+    driver: bridge
 
 volumes:
   data:
