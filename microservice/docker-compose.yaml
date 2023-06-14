@@ -55,6 +55,8 @@ services:
       - SERVICE=auth
     env_file:
       - ./auth/.env
+    networks:
+      - backend_network
     depends_on:
       - mysql
       - rabbitmq
