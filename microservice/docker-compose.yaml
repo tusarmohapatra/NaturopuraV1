@@ -1,7 +1,6 @@
-version: '2.4'
+version: "2.4"
 
 services:
-
   mysql:
     image: mysql:5.7
     container_name: mysql
@@ -47,6 +46,7 @@ services:
       args:
         - NODE_ENV=development
       target: dev
+      dockerfile: Dockerfile
     ports:
       - "3001:3001"
     volumes:
@@ -58,12 +58,30 @@ services:
     depends_on:
       - mysql
       - rabbitmq
-      
+
+  admin_app:
+    build:
+      target: dev
+      context: ./frontend/admin
+      dockerfile: Dockerfile
+    ports:
+      - 3002:3000
+    volumes:
+      - ./frontend/admin:/app/
+
+  user_app:
+    build:
+      target: dev
+      context: ./frontend/user
+      dockerfile: Dockerfile
+    ports:
+      - 3003:3000
+    volumes:
+      - ./frontend/user:/app/
+
 networks:
   backend_network:
     driver: bridge
 
 volumes:
   data:
-
-
