@@ -9,6 +9,7 @@ services:
       MYSQL_DATABASE: app_db
       MYSQL_USER: pass
       MYSQL_PASSWORD: pass
+    restart: always
     ports:
       - "3306:3306"
     volumes:
@@ -39,6 +40,7 @@ services:
       - "5672:5672"
       # HTTP management UI
       - "15672:15672"
+    restart: always
 
   auth:
     build:
@@ -53,6 +55,7 @@ services:
       - ./auth:/app/
     environment:
       - SERVICE=auth
+    restart: always
     env_file:
       - ./auth/.env
     networks:
@@ -68,6 +71,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - 3002:3000
+    restart: always
     volumes:
       - ./frontend/admin:/app/
 
@@ -78,6 +82,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - 3003:3000
+    restart: always
     volumes:
       - ./frontend/user:/app/
 
