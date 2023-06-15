@@ -1,9 +1,12 @@
 const express = require('express');
 require('express-async-errors');
-const sequelize = require('./database');
+const sequelize = require('./database/database');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('./user.model');
+const User = require('./model/user.model');
+const UserMeta = require('./model/userMeta.model');
+require('dotenv').config();
+
 
 const app = express();
 

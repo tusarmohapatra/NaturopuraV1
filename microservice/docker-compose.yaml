@@ -5,10 +5,10 @@ services:
     image: mysql:5.7
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: app_db
-      MYSQL_USER: pass
-      MYSQL_PASSWORD: pass
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     restart: always
     ports:
       - "3306:3306"
@@ -29,7 +29,7 @@ services:
       MYSQL_PASSWORD: pass
     restart: always
     ports:
-      - "8080:80"
+      - ${PHP_MY_ADMIN_PORT}:80
     networks:
       - backend_network
 
@@ -50,7 +50,7 @@ services:
       target: dev
       dockerfile: Dockerfile
     ports:
-      - "3001:3001"
+      - ${AUTH_SERVICE_PORT}:3001
     volumes:
       - ./auth:/app/
     environment:
@@ -70,7 +70,7 @@ services:
       context: ./frontend/admin
       dockerfile: Dockerfile
     ports:
-      - 3002:3000
+      - ${ADMIN_APP_PORT}:3000
     restart: always
     volumes:
       - ./frontend/admin:/app/
@@ -81,7 +81,7 @@ services:
       context: ./frontend/user
       dockerfile: Dockerfile
     ports:
-      - 3003:3000
+      - ${USER_APP_PORT}:3000
     restart: always
     volumes:
       - ./frontend/user:/app/

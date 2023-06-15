@@ -1,7 +1,10 @@
+
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize('app_db', 'root', 'root', {
-  host: 'mysql', // Replace with the host of your Docker MySQL container
+require('./createUserDb.js')
+
+const sequelize = new Sequelize(process.env.SERVICE_DATABASE_NAME, process.env.DATABASE_USER_NAME, process.env.DATABASE_USER_PASSWORD, {
+  host: process.env.DATABASE_HOST_NAME, // Replace with the host of your Docker MySQL container
   dialect: 'mysql',
 });
 sequelize
