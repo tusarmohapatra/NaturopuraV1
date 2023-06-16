@@ -1,6 +1,6 @@
 const { Sequelize, Model, DataTypes } = require('sequelize');
 const sequelize = require('../database/database');
-const User = require('./user.model');
+import User from "./user.model";
 
 
 const UserMeta = sequelize.define('userMeta', {
@@ -92,4 +92,5 @@ const UserMeta = sequelize.define('userMeta', {
   }
 });
 UserMeta.belongsTo(User, {foreignKey: 'user_id' });
-module.exports = UserMeta;
+
+export default UserMeta;

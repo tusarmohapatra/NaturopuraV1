@@ -20,7 +20,7 @@ COPY . .
 # Install development dependencies
 RUN npm install
 
-CMD ["npx", "nodemon", "index.js"]
+CMD ["npm", "start"]
 
 FROM node:14-alpine as production
 
