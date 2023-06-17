@@ -6,19 +6,16 @@ const jwt = require('jsonwebtoken');
 import User  from './model/user.model';
 import UserMeta from './model/userMeta.model';
 
+import apiRouter from './routes/api'
 
 require('dotenv').config();
-
-
 const app = express();
-
 app.use(express.json());
 
-const port = process.env.PORT || 3000;
+app.use('/api', apiRouter);
 
-app.listen(port, () => {
-  console.log(`Auth Service at ${port}`);
-});
+
+
 
 // Creating all the tables defined in user
 sequelize.sync().then((result:any) => {
@@ -27,3 +24,11 @@ sequelize.sync().then((result:any) => {
 }).catch((err:any) => {
   console.log('error');
 });
+
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Auth Service at ${port}`);
+});
+
+

@@ -51,5 +51,7 @@ docker-compose up -d
 ```
 
 
+apt-get install apt-transport-https software-properties-common ca-certificates curl gnupg lsb-release -y
+
 
 
