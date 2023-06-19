@@ -1,6 +1,22 @@
 version: "2.4"
 
 services:
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: nginx-proxy
+  #   ports:
+  #     - 8080:80
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf
+  #   networks:
+  #     - backend_network
+  #   depends_on:
+  #     - mysql
+  #     - user_app
+  #     - admin_app
+  #     - auth
+  
   mysql:
     image: mysql:5.7
     container_name: mysql
@@ -41,6 +57,8 @@ services:
       # HTTP management UI
       - "15672:15672"
     restart: always
+    networks:
+      - backend_network
 
   auth:
     build:
@@ -50,7 +68,7 @@ services:
       target: dev
       dockerfile: Dockerfile
     ports:
-      - ${AUTH_SERVICE_PORT}:3001
+      - ${AUTH_SERVICE_PORT}:3000
     volumes:
       - ./auth:/app/
     environment:
@@ -63,6 +81,28 @@ services:
     depends_on:
       - mysql
       - rabbitmq
+  
+  api-gateway:
+    build:
+      context: ./apiGateway
+      args:
+        - NODE_ENV=development
+      target: dev
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - ./apiGateway:/app/
+    environment:
+      - SERVICE=auth
+    restart: always
+    env_file:
+      - ./apiGateway/.env
+    networks:
+      - backend_network
+    depends_on:
+      - auth
+      - rabbitmq
 
   admin_app:
     build:
@@ -74,6 +114,8 @@ services:
     restart: always
     volumes:
       - ./frontend/admin:/app/
+    networks:
+      - backend_network
 
   user_app:
     build:
@@ -85,6 +127,10 @@ services:
     restart: always
     volumes:
       - ./frontend/user:/app/
+    networks:
+      - backend_network
+  
+  
 
 networks:
   backend_network:

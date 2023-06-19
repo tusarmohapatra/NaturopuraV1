@@ -8,7 +8,7 @@ router.post('/register', (req: Request, res: Response) => {
   // Handle user registration logic
 });
 
-router.get('/test', (req: Request, res: Response) => {
+router.get('/', (req: Request, res: Response) => {
     
     res.send('working')
   });
