@@ -77,3 +77,10 @@ export const userSignup = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "An internal server error occurred",status:'error' });
   }
 };
+
+
+
+export const userLogin = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+}
