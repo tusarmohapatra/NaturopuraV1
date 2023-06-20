@@ -7,7 +7,7 @@ admin:
 apiEndpoints:
   auth:
     host: localhost
-    paths: ['/auth/user/*']
+    paths: ['/auth/user/login','/auth/user/signup']
 serviceEndpoints:
   auth:
    url: 'http://auth:3000'

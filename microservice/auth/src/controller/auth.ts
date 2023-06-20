@@ -32,7 +32,7 @@ export const userSignup = async (req: Request, res: Response) => {
         where: { email: email, deletedAt: null },
       });
 
-      if (!user) {
+      if (user) {
         return res.status(400).json({
           error: {
             messages: "you have already signup try to login.",
