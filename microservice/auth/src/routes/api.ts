@@ -1,22 +1,11 @@
 import { Router, Request, Response } from 'express';
+import User from '../model/user.model';
+import env from '../environment/environment';
+import { userSignup } from "../controller/auth";
 
 const router: Router = Router();
 
 // Define a route for user registration
-router.post('/register', (req: Request, res: Response) => {
-
-  // Handle user registration logic
-});
-
-router.get('/', (req: Request, res: Response) => {
-    
-    res.send('working')
-  });
-  
-
-// Define a route for user login
-router.post('/login', (req: Request, res: Response) => {
-  // Handle user login logic
-});
+router.post('/user/signup', userSignup);
 
 export default router;

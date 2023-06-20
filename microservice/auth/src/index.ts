@@ -1,7 +1,6 @@
 import express from 'express';
 require('express-async-errors');
 const sequelize = require('./database/database')
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 import User  from './model/user.model';
 import UserMeta from './model/userMeta.model';

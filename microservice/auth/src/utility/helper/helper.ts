@@ -1,6 +1,5 @@
 ///
 import env from '../../environment/environment';
-
 const mysql = require('mysql2');
 
 ////
@@ -27,3 +26,8 @@ export async function createDbForService() {
     connection.end();
   });
 }
+
+
+// export function generateAccessToken(date:{name:string}) {
+//   return jwt.sign(username, env.TOKEN_SECRET, { expiresIn: '1800s' });
+// }
