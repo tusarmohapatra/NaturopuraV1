@@ -14,13 +14,10 @@ export const userSignup = async (req: Request, res: Response) => {
     const schema = Joi.object({
       firstName: Joi.string().min(3).max(30).required(),
       lastName: Joi.string().min(3).max(30).required(),
-
       password: Joi.string()
         .pattern(new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/))
         .required(),
-
       isRemember: Joi.boolean().required(),
-
       email: Joi.string()
         .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
         .required(),
@@ -37,7 +34,10 @@ export const userSignup = async (req: Request, res: Response) => {
 
       if (!user) {
         return res.status(400).json({
-          error: { messages: "you have already signup try to login.",status:'error' },
+          error: {
+            messages: "you have already signup try to login.",
+            status: "error",
+          },
         });
       } else {
         let hashPass: string = "";
@@ -74,13 +74,69 @@ export const userSignup = async (req: Request, res: Response) => {
       }
     }
   } catch (error) {
-    return res.status(500).json({ message: "An internal server error occurred",status:'error' });
+    return res
+      .status(500)
+      .json({ message: "An internal server error occurred", status: "error" });
   }
 };
-
-
 
 export const userLogin = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-}
+  try {
+    const schema = Joi.object({
+      password: Joi.string().required(),
+      email: Joi.string()
+        .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
+        .required(),
+    });
+
+    const { error, value } = schema.validate(req.body);
+
+    if (error) {
+      return res.status(400).json({ error: error.details });
+    } else {
+      const user = await User.findOne({
+        where: { email: email, deletedAt: null },
+      });
+
+      if (!user) {
+        return res.status(400).json({
+          message: "please signup first",
+          status: "error",
+          errorKey: "email",
+        });
+      }
+
+      bcrypt.compare(password, user.password).then((resData: boolean) => {
+        if (resData) {
+          const newCustomer = {
+            isActive: user.isActive,
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role,
+            email: user.email,
+          };
+          return res.status(200).json({
+            message: "successfully login.",
+            status: "success",
+            token: jwt.sign(newCustomer, env.TOKEN_SECRET, {
+              expiresIn: "48h",
+            }),
+          });
+        } else {
+          return res.status(400).json({
+            message: "Password is not match.",
+            status: "error",
+            errorKey: "password",
+          });
+        }
+      });
+    }
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "An internal server error occurred", status: "error" });
+  }
+};
