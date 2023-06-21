@@ -36,6 +36,7 @@ We have presented a comprehensive survey on current blockchain-based agricultura
 (2) Integration with existing legacy systems
 (3) Security and privacy.
 
-
+**Achievement:**
+The Naturopura project was backed & approved by STPI under FASAL Coe scheme.
 
 
