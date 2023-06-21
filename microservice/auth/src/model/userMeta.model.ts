@@ -13,10 +13,6 @@ const UserMeta = sequelize.define('userMeta', {
     type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
   },
-  addressId: {
-    type: DataTypes.INTEGER.UNSIGNED,
-    allowNull: true,
-  },
   farmLocation: {
     type: DataTypes.STRING,
     allowNull: true,
@@ -91,6 +87,6 @@ const UserMeta = sequelize.define('userMeta', {
     allowNull: true
   }
 });
-UserMeta.belongsTo(User, {foreignKey: 'user_id' });
+UserMeta.belongsTo(User, {foreignKey: 'userId' });
 
 export default UserMeta;

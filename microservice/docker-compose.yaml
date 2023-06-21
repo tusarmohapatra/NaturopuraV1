@@ -82,6 +82,28 @@ services:
       - mysql
       - rabbitmq
   
+  order:
+    build:
+      context: ./order
+      args:
+        - NODE_ENV=development
+      target: dev
+      dockerfile: Dockerfile
+    ports:
+      - ${ORDER_SERVICE_PORT}:3000
+    volumes:
+      - ./order:/app/
+    environment:
+      - SERVICE=auth
+    restart: always
+    env_file:
+      - ./order/.env
+    networks:
+      - backend_network
+    depends_on:
+      - mysql
+      - rabbitmq
+  
   api-gateway:
     build:
       context: ./apiGateway
