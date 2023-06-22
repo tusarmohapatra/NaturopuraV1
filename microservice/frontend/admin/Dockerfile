@@ -1,5 +1,5 @@
 # Stage 1: Build the application
-FROM node:14 AS dev
+FROM node:16.17.0-bullseye-slim AS dev
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -14,4 +14,4 @@ RUN npm install
 COPY . .
 
 # Build the Next.js application
-CMD ["npm", "start"]
+CMD npm run dev
