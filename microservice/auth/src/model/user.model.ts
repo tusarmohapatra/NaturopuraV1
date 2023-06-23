@@ -35,7 +35,15 @@ const User = sequelize.define('user', {
     allowNull: false,
     defaultValue: true
   },
-  password: {
+  key: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  signature: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  walletAddress: {
     type: DataTypes.STRING,
     allowNull: false,
   },
