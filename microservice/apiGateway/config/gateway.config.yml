@@ -8,9 +8,14 @@ apiEndpoints:
   auth:
     host: localhost
     paths: ['/auth/user/login','/auth/user/signup','/auth/admin/login','/auth/admin/signup']
+  static:
+    host: localhost
+    paths: ['/data/countryCode','/auth/user/login']
 serviceEndpoints:
   auth:
    url: 'http://auth:3000'
+  static:
+   url: 'http://static:3000'
 policies:
   - basic-auth
   - cors
@@ -25,9 +30,15 @@ pipelines:
     apiEndpoints:
       - auth
     policies:
-    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-    # - key-auth:
       - proxy:
           - action:
               serviceEndpoint: auth 
+              changeOrigin: true
+  static:
+    apiEndpoints:
+      - static
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: static 
               changeOrigin: true

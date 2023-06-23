@@ -29,7 +29,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - data:/var/lib/mysql
+      - ./data/db:/var/lib/mysql
     networks:
       - backend_network
 
@@ -138,6 +138,29 @@ services:
       - ./frontend/admin:/app/
     networks:
       - backend_network
+  
+  static:
+    build:
+      context: ./static
+      args:
+        - NODE_ENV=development
+      target: dev
+      dockerfile: Dockerfile
+    ports:
+      - ${STATIC_SERVICE_PORT}:3000
+    volumes:
+      - ./static:/app/
+    environment:
+      - SERVICE=auth
+    restart: always
+    env_file:
+      - ./static/.env
+    networks:
+      - backend_network
+    depends_on:
+      - mysql
+      - rabbitmq
+      - mongodb
 
   user_app:
     build:
@@ -149,6 +172,20 @@ services:
     restart: always
     volumes:
       - ./frontend/user:/app/
+    networks:
+      - backend_network
+  
+  mongodb:
+    image: mongo:4.4
+    container_name: mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/mongoDb:/data/db
     networks:
       - backend_network
   

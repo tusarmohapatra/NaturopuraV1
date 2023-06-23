@@ -14,7 +14,22 @@ app.use(express.json());
 app.use('/auth', apiRouter);
 
 
-// Creating all the tables defined in user
+
+async function syncDatabase() {
+  try {
+    await User.sync({ force: true });
+  } catch (error) {
+    console.log("error while create sync with user table");
+  }
+
+  try {
+    await UserMeta.sync({ force: true });
+  } catch (error) {
+    console.log("error while create sync with UserMeta table");
+  }
+};
+syncDatabase();
+
 sequelize.sync().then((result:any) => {
   console.log('result');
  
