@@ -4,7 +4,7 @@ const sequelize = require('./database/database')
 const jwt = require('jsonwebtoken');
 import User  from './model/user.model';
 import UserMeta from './model/userMeta.model';
-
+const amqp = require('amqplib');
 import apiRouter from './routes/api'
 
 require('dotenv').config();
@@ -12,7 +12,6 @@ const app = express();
 app.use(express.json());
 
 app.use('/auth', apiRouter);
-
 
 
 async function syncDatabase() {
