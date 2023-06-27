@@ -1,34 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Starter Next.js TypeScript
 
+Start a new project on Next.js. This starter template consists of a connect wallet button and wallet integration.
+      
 ## Getting Started
 
-First, run the development server:
+Start project locally using CLI:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+npx create-mesh-app starter-next-ts-template
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Start your project on [Demeter](https://demeter.run/):
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+[![Code in Cardano Workspace](https://demeter.run/code/badge.svg)](https://demeter.run/code?repository=https://github.com/MeshJS/starter-next-ts-template.git&template=typescript)
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+### [React components and hooks](https://meshjs.dev/react)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Frontend components for wallet connections, and useful React hooks to getting wallet states - Mesh provides everything you need to bring your Web3 user interface to life.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### [APIs](https://meshjs.dev/apis)
 
-## Deploy on Vercel
+From wallet integrations to transaction builders, Mesh makes Web3 development easy with reliable, scalable, and well-engineered APIs & developer tools.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### [Guides](https://meshjs.dev/guides)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Whether you are new to web development or a seasoned blockchain full-stack developer, these guides will help you get started.
+
+## Connect with us
+
+Follow us on [Twitter](https://twitter.com/meshsdk) for updates.
+
+Join our [Discord](https://discord.gg/Z6AH9dahdH) for any questions and suggestions.
