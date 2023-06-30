@@ -173,7 +173,7 @@ export const adminLogin = async (req: Request, res: Response) => {
           };
           return res.status(201).json(createSuccessResponse("successfully login.",jwt.sign(newCustomer, env.TOKEN_SECRET, {
             expiresIn: "48h",
-          }),{}));
+          }),newCustomer));
         } else {
           return res.status(400).json(createErrorResponse("SIGNATURE_NOT_MATCH", "Signature is not match.", {}));
         }
@@ -241,7 +241,7 @@ export const adminSignup = async (req: Request, res: Response) => {
     const { error, value } = schema.validate(req.body);
 
     if (error) {
-      return res.status(400).json({ error: error.details });
+      return res.status(400).json(createErrorResponse('INVALID_INPUT','Invalid input provided.',error.details));
     } else {
       const user = await User.findOne({
         where: { email: email, deletedAt: null },
@@ -281,20 +281,16 @@ export const adminSignup = async (req: Request, res: Response) => {
               role: customer.role,
               email: customer.email,
             };
-            return res.status(201).json({
-              message: "successfully register.",
-              status: "success",
-              token: isRemember
-                ? jwt.sign(newCustomer, env.TOKEN_SECRET, { expiresIn: "48h" })
-                : "",
-            });
+            return res.status(201).json(createSuccessResponse("successfully register.",isRemember
+            ? jwt.sign(newCustomer, env.TOKEN_SECRET, { expiresIn: "48h" })
+            : "",newCustomer));
           })
           .catch((err: any) => console.error(err.message));
       }
     }
   } catch (error) {
     return res
-      .status(500)
-      .json({ message: "An internal server error occurred", status: "error" });
+    .status(500)
+    .json(createErrorResponse('INTERNAL_SERVER_ERROR','An internal server error occurred',{}));
   }
 };

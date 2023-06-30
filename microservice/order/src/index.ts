@@ -19,7 +19,7 @@ sequelize.sync().then((result:any) => {
 });
 
 
-consumeEvent();
+
 async function syncDatabase() {
   try {
     await Address.sync({ force: true });
@@ -30,7 +30,8 @@ async function syncDatabase() {
 syncDatabase();
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+app.listen(port, async () => {
+  await consumeEvent();
   console.log(`Order Service at ${port}`);
 });
 

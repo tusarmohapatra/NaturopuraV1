@@ -1,35 +1,34 @@
-# Starter Next.js TypeScript
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-Start a new project on Next.js. This starter template consists of a connect wallet button and wallet integration.
-      
 ## Getting Started
 
-Start project locally using CLI:
+First, run the development server:
 
 ```bash
-npx create-mesh-app starter-next-ts-template
+npm run dev
+# or
+yarn dev
 ```
 
-Start your project on [Demeter](https://demeter.run/):
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-[![Code in Cardano Workspace](https://demeter.run/code/badge.svg)](https://demeter.run/code?repository=https://github.com/MeshJS/starter-next-ts-template.git&template=typescript)
+You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
 ## Learn More
 
-### [React components and hooks](https://meshjs.dev/react)
+To learn more about Next.js, take a look at the following resources:
 
-Frontend components for wallet connections, and useful React hooks to getting wallet states - Mesh provides everything you need to bring your Web3 user interface to life.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-### [APIs](https://meshjs.dev/apis)
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-From wallet integrations to transaction builders, Mesh makes Web3 development easy with reliable, scalable, and well-engineered APIs & developer tools.
+## Deploy on Vercel
 
-### [Guides](https://meshjs.dev/guides)
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Whether you are new to web development or a seasoned blockchain full-stack developer, these guides will help you get started.
-
-## Connect with us
-
-Follow us on [Twitter](https://twitter.com/meshsdk) for updates.
-
-Join our [Discord](https://discord.gg/Z6AH9dahdH) for any questions and suggestions.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

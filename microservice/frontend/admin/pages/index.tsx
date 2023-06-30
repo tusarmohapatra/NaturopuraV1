@@ -1,45 +1,30 @@
 import Head from "next/head";
-import { CardanoWallet, MeshBadge } from "@meshsdk/react";
-import { BrowserWallet } from "@meshsdk/core";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import Login from "../components/Login";
+import Signup from "../components/Signup";
 
 export default function Home() {
+  const router = useRouter();
+  const [signature, setSignature] = useState("");
+  const user = useSelector((state: any) => state.auth.user);
+  const error = useSelector((state: any) => state.auth.error);
 
+  const dispatch = useDispatch();
 
+  useEffect(() => {}, [dispatch]);
 
-  if (typeof window !== "undefined") {
-    const wallet_find = BrowserWallet.getInstalledWallets();
-
-    useEffect(() => {
-      console.log(`wallet_find`, wallet_find);
-    }, []);
-  }
-
-  async function connectToWallet() {
-    const wallet = await BrowserWallet.enable("Nami");
-    const addresses = await wallet.getUsedAddresses();
-    const signature = await wallet.signData(addresses[0], 'mesh');
-    console.log(`wallet`,wallet,signature ,addresses);
-  }
-  
-
+  useEffect(() => {
+    if (!user) {
+      router.push("/login");
+    }
+  }, []);
 
   return (
-    <div className="container">
-      <main className="main">
-        <h1 className="title">
-          <a href="https://meshjs.dev/">Mesh</a> Next.js
-        </h1>
-
-        <button onClick={()=>connectToWallet()}>Test</button>
-        <div className="demo">
-          <CardanoWallet />
-        </div>
-      </main>
-
-      <footer className="footer">
-        <MeshBadge dark={true} />
-      </footer>
-    </div>
+    <>
+      {/* {!user && !error  &&  <Login/>}
+     {error?.code == 'USER_NOT_EXIT'  &&  <Signup/>} */}
+    </>
   );
 }
