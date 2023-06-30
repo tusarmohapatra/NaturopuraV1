@@ -4,7 +4,7 @@ export const signUpUser = async (credentials: {
   firstName: string;
   lastName:string,
   email:string,
-  isRemember:string,
+  isRemember:Boolean,
   signature:string,
   dialingCode:string,
   address:string,
