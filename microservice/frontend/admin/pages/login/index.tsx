@@ -54,7 +54,7 @@ const index = () => {
       <main className="main flex items-center flex-col">
         <img src="/images/Group-230.png" alt="" className="m-4" />
         {/* <button onClick={() => connectToWallet()}>Test</button> */}
-        <label htmlFor="mySelect">Sign-up with wallet</label>
+        <label htmlFor="mySelect" className="text-red-700">Sign-up with wallet</label>
         <select
           id="mySelect"
           className="w-[10rem]"
