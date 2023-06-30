@@ -3,18 +3,26 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { createWrapper } from "next-redux-wrapper";
 import rootReducer from "../reducers/index";
-// import persistStore from "redux-persist/es/persistStore";
-// import { persistedReducer } from "./persistConfig";
+import storage from 'redux-persist/lib/storage';
+import { persistReducer, persistStore } from 'redux-persist';
 
-// initial states here
 const initalState = {};
 
 // middleware
 const middleware = [thunk];
+// whitelist: ['users', 'products'],
 
+// persist config
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['auth'],
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 // creating store
 export const store = createStore(
-  rootReducer,
+  persistedReducer,
   initalState,
   composeWithDevTools(applyMiddleware(...middleware))
 );
@@ -23,4 +31,4 @@ export const store = createStore(
 const makeStore = () => store;
 
 
-export const wrapper = createWrapper(makeStore);
+export const persist = persistStore(store);
