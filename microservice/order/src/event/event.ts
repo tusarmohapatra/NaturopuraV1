@@ -31,12 +31,13 @@ export async function consumeUserRegisteredEvent() {
 
         channel.ack(message);
       });
-      
-      
-      console.log(colorLog('Waiting for user registered events...','FgGreen'));
+
+      console.log(colorLog("Waiting for user registered events...", "FgGreen"));
       resolve("Waiting for user registered events...");
     } catch (error) {
-      console.log(colorLog('Failed to consume user registered event:','FgRed'));
+      console.log(
+        colorLog("Failed to consume user registered event:", "FgRed")
+      );
 
       console.error(error);
       reject("Failed to consume user registered event:");

@@ -49,7 +49,9 @@ export const login = (credentials: { signature: string; key: string }) => {
       if (typeof window !== "undefined") {
         localStorage.setItem("accessToken", response?.token);
       }
-      const user = response.data; // Assuming the server returns the user object
+      const user = response.data;
+      user.token = response?.token;
+       // Assuming the server returns the user object
       dispatch(loginSuccess(user));
       dispatch(setLoading(false));
     } catch (error: any) {
@@ -88,7 +90,8 @@ export const signUp = (credentials: {
       if (typeof window !== "undefined") {
         localStorage.setItem("accessToken", response?.token);
       }
-      const user = response.data; // Assuming the server returns the user object
+      const user = response.data;
+      user.token = response?.token; // Assuming the server returns the user object
       dispatch(loginSuccess(user));
       dispatch(setLoading(false));
     } catch (error: any) {
