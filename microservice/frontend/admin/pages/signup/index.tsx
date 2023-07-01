@@ -142,6 +142,7 @@ const index = () => {
             
             <select
               id="countryCode"
+              title="countryCode"
               name="countryCode"
               value={formData.countryCode}
               onChange={handleChange}
@@ -151,9 +152,9 @@ const index = () => {
               <option value="+91">+91</option>
             </select>
             <input
-              type="tel"
               id="contactNumber"
               name="contactNumber"
+              title="contactNumber"
               value={formData.contactNumber}
               onChange={handleChange}
               className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
@@ -164,6 +165,7 @@ const index = () => {
             <select
               id="walletName"
               name="walletName"
+              title="walletName"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required
               value={formData.walletName}
@@ -182,6 +184,7 @@ const index = () => {
             <select
               id="type"
               name="type"
+              title="type"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required
               value={formData.type}

@@ -1,6 +1,6 @@
 import {Sequelize} from 'sequelize';
 
-import {createDbForService} from '../utility/helper/helper';
+import {colorLog, createDbForService} from '../utility/helper/helper';
 
 import env from '../environment/environment';
 
@@ -25,9 +25,10 @@ createDbForService()
 function connectToDb() {
   sequelize
     .authenticate()
-    .then(() => console.log('Connection has been established successfully.'))
-    .catch((error: any) =>
-      console.error('Unable to connect to the database:', error)
-    );
+    .then(() => console.log(colorLog("Connection has been established successfully.", "BgGreen")))
+    .catch((error: any) => {
+      console.log(colorLog("Unable to connect to the database:", "BgRed"));
+      console.error(error);
+    });
 }
 module.exports = sequelize;
