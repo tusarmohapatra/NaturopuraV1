@@ -26,7 +26,7 @@ const equipmentCategory = sequelize.define('equipmentCategory', {
   },
   keyFeatures: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   power_source: {
     type: DataTypes.ENUM('Electronic','IC','Manual'),
@@ -34,11 +34,11 @@ const equipmentCategory = sequelize.define('equipmentCategory', {
   },
   maintenance_requirements: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   warranty: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   createdBy: {
     type: DataTypes.INTEGER.UNSIGNED,
