@@ -7,18 +7,28 @@ import Image from "./model/product.image";
 import productCategory from "./model/product.category";
 import equipmentCategory from "./model/equipment.category";
 import router from "./routes/admin";
+import chemicalCategory from "./model/chemical.category";
+import chemicalRouter from "./routes/chemicals";
+import equipmentRouter from "./routes/equipment";
+import farmerRoute from "./routes/farmer";
 const sessions = require("express-session");
 require("express-async-errors");
-
-
 const jwt = require("jsonwebtoken");
 const sequelize = require("./database/database");
+
+
 require("dotenv").config();
 const app = express();
 
 app.use(express.json());
 app.use("/product/admin", middlewareRoleManager("admin"), router);
+app.use("/product/pesticide", middlewareRoleManager("agricultural_chemicals"), chemicalRouter);
+app.use("/product/farmer", middlewareRoleManager("farmer"), farmerRoute);
+app.use("/product/equipment", middlewareRoleManager("equipment_manufacturers"), equipmentRouter);
 
+
+
+// farmer,agricultural_chemicals,equipment_manufacturers
 const port = process.env.PORT || 3000;
 
 app.use(
@@ -45,11 +55,9 @@ async function syncDatabase() {
     await Image.sync({ force: true });
     await productCategory.sync({ force: true });
     await equipmentCategory.sync({ force: true });
+    await chemicalCategory.sync({ force: true });
   } catch (error) {
     console.log(colorLog("Error while create table", "FgRed"));
-    // setTimeout(() => {
-    //   syncDatabase();
-    // }, 200);
   }
 }
 syncDatabase();

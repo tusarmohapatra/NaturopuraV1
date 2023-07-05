@@ -13,7 +13,7 @@ apiEndpoints:
     paths: ['/data/countryCode','/auth/user/login']
   product:
     host: localhost
-    paths: ['/product/admin/*']
+    paths: ['/product/admin/*','/product/pesticide/*','/product/farmer/*','/product/equipment/*']
 serviceEndpoints:
   auth:
    url: 'http://auth:3000'
