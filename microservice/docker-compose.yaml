@@ -81,6 +81,28 @@ services:
     depends_on:
       - mysql
       - rabbitmq
+
+  product:
+    build:
+      context: ./product
+      args:
+        - NODE_ENV=development
+      target: dev
+      dockerfile: Dockerfile
+    ports:
+      - ${PRODUCT_SERVICE_PORT}:3000
+    volumes:
+      - ./product:/app/
+    environment:
+      - SERVICE=auth
+    restart: always
+    env_file:
+      - ./product/.env
+    networks:
+      - backend_network
+    depends_on:
+      - mysql
+      - rabbitmq
   
   order:
     build:

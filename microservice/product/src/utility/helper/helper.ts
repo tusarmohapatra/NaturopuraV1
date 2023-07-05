@@ -1,16 +1,18 @@
 ///
-import { response } from 'express';
-import env from '../../environment/environment';
-const mysql = require('mysql2');
+import { response, Request, Response, NextFunction } from "express";
+import env from "../../environment/environment";
+import { SessionData } from "express-session";
+const mysql = require("mysql2");
+const jwt = require("jsonwebtoken");
+import "express-session";
 
-////
+
 export async function createDbForService() {
   const connection = mysql.createConnection({
     host: env.DATABASE_HOST_NAME,
     user: env.DATABASE_USER_NAME,
     password: env.DATABASE_USER_PASSWORD,
   });
-
 
   return new Promise((resolve, reject) => {
     connection.query(
@@ -28,12 +30,67 @@ export async function createDbForService() {
   });
 }
 
+export const middlewareRoleManager = (accessFor: string) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (req.headers?.authorization) {
+      const token = req.headers?.authorization.replace("Bearer ", "");
+      const decoded = jwt.verify(token, env.TOKEN_SECRET);
+      if (decoded?.role === accessFor) {
+        next();
+      } else {
+        return res
+          .status(401)
+          .json(
+            createErrorResponse(
+              "UNABLE_TO_AUTHORIZE",
+              "you are not authorize for this route"
+            )
+          );
+      }
+    } else {
+      return res
+        .status(401)
+        .json(
+          createErrorResponse(
+            "UNABLE_TO_AUTHORIZE",
+            "you are not authorize for this route"
+          )
+        );
+    }
 
-// export function generateAccessToken(date:{name:string}) {
-//   return jwt.sign(username, env.TOKEN_SECRET, { expiresIn: '1800s' });
-// }
+    // Call next() to pass control to the next middleware or route handler
+  };
+};
 
+interface Person {
+  isActive: boolean ;
+  id: number;
+  firstName:string;
+  lastName:string;
+  role:string;
+  email:string;
+  iat:number;
+  exp:number;
+}
 
+export const getPayloadFromToken = (req: Request): Person  => {
+  if (req.headers?.authorization) {
+    const token = req.headers?.authorization.replace("Bearer ", "");
+    const decoded = jwt.verify(token, env.TOKEN_SECRET);
+    return decoded;
+  } else {
+    return {
+      isActive: true,
+      id: 0,
+      firstName: "",
+      lastName: "",
+      role: "",
+      email: "",
+      iat: 0,
+      exp: 0,
+    };
+  }
+};
 
 
 export function colorLog(val: any, color: string) {
@@ -143,4 +200,31 @@ export function colorLog(val: any, color: string) {
   }
 
   return response;
+}
+
+export function createErrorResponse(
+  code: string,
+  message: string,
+  details = {}
+) {
+  return {
+    error: {
+      code,
+      message,
+      details,
+    },
+  };
+}
+
+export function createSuccessResponse(
+  messages: string,
+  token: string = "",
+  data = {}
+) {
+  return {
+    success: true,
+    data,
+    messages,
+    token,
+  };
 }

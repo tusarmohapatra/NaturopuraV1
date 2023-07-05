@@ -11,11 +11,16 @@ apiEndpoints:
   static:
     host: localhost
     paths: ['/data/countryCode','/auth/user/login']
+  product:
+    host: localhost
+    paths: ['/product/admin/*']
 serviceEndpoints:
   auth:
    url: 'http://auth:3000'
   static:
    url: 'http://static:3000'
+  product:
+   url: 'http://product:3000'
 policies:
   - basic-auth
   - cors
@@ -41,4 +46,12 @@ pipelines:
       - proxy:
           - action:
               serviceEndpoint: static 
+              changeOrigin: true
+  product:
+    apiEndpoints:
+      - product
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: product 
               changeOrigin: true

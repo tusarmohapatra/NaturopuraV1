@@ -48,7 +48,7 @@ const Product = sequelize.define('product', {
   },
   productType: {
     type: DataTypes.ENUM('GROCERY','EQUIPMENT','CHEMICAL'),
-    defaultValue:'AVAILABLE',
+    defaultValue:'GROCERY',
     allowNull: false
   },
   productCategory: {

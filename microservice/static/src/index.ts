@@ -9,7 +9,6 @@ const app = express();
 app.use(express.json());
 
 app.use('/data', router);
-
 const port = process.env.PORT || 3000;
 connectToDatabase()
   .then((db) => {

@@ -46,10 +46,10 @@ export const userSignup = async (req: Request, res: Response) => {
           })
           .then(async (hash: string) => {
             const customer = await User.create({
-              firstName: firstName,
-              lastName: lastName,
+              firstName: firstName.toLowerCase(),
+              lastName: lastName.toLowerCase(),
               role: "consumer",
-              email: email,
+              email: email.toLowerCase(),
               signature: hash,
               key:key,
               walletAddress:address
