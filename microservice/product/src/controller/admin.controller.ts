@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import env from "../environment/environment";
-import { createErrorResponse, createSuccessResponse, getPayloadFromToken } from "../utility/helper/helper";
+import {
+  createErrorResponse,
+  createSuccessResponse,
+  getPayloadFromToken,
+} from "../utility/helper/helper";
 import productCategory from "../model/product.category";
 const Joi = require("joi");
 
@@ -67,24 +71,19 @@ export const createCategory = async (req: Request, res: Response) => {
       );
   } else {
     try {
-    const payload =   getPayloadFromToken(req);
+      const payload = getPayloadFromToken(req);
       const category = await productCategory.create({
         name,
         description,
         recommendedStorageConditions,
         shelfLifeIndDays,
         harvestingSeason,
-        "createdBy":payload.id,
+        createdBy: payload.id,
       });
 
       return res
-      .status(201)
-      .json(
-        createSuccessResponse(
-          "category created successfully",
-          ""
-        )
-      );
+        .status(201)
+        .json(createSuccessResponse("category created successfully", ""));
     } catch (error) {
       return res
         .status(500)
