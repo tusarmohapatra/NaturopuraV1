@@ -11,6 +11,8 @@ import chemicalCategory from "./model/chemical.category";
 import chemicalRouter from "./routes/chemicals";
 import equipmentRouter from "./routes/equipment";
 import farmerRoute from "./routes/farmer";
+import migration from "./migrations";
+
 const sessions = require("express-session");
 require("express-async-errors");
 const jwt = require("jsonwebtoken");
@@ -74,7 +76,7 @@ async function establishConnection() {
       }, 200);
     });
 }
-
+migration();
 app.listen(port, async () => {
   establishConnection();
   console.log(colorLog(`Order Service at ${port}`, "FgGreen"));

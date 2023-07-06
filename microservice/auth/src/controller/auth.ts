@@ -92,7 +92,7 @@ export const userLogin = async (req: Request, res: Response) => {
       return res.status(400).json(createErrorResponse('INVALID_INPUT','Invalid input provided.',error.details)); 
     } else {
       const user = await User.findOne({
-        where: { key: key, deletedAt: null },
+        where: { key: key, deletedAt: null,isActive:1 },
       });
 
       if (!user) {
@@ -145,7 +145,7 @@ export const adminLogin = async (req: Request, res: Response) => {
       return res.status(400).json(createErrorResponse('INVALID_INPUT','Invalid input provided.',error.details)); 
     } else {
       const user = await User.findOne({
-        where: { key: key, deletedAt: null },
+        where: { key: key, deletedAt: null,isActive:1 },
       });
 
       if (!user) {

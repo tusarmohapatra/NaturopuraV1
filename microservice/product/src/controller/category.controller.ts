@@ -180,6 +180,7 @@ export const updateCategory = async (req: Request, res: Response) => {
           recommendedStorageConditions,
           shelfLifeIndDays,
           harvestingSeason,
+          updatedBy:payload?.id
         },
         { where: { id: id } }
       );
@@ -213,9 +214,10 @@ export const deleteCategory = async (req: Request, res: Response) => {
       .json(createErrorResponse("RECORD_NOT_EXIT", "Record is not exit."));
   } else {
     try {
+      const payload = getPayloadFromToken(req);
       await productCategory.update(
         { deletedAt: new Date() },
-        { where: { id: categoryId, deletedAt: null } }
+        { where: { id: categoryId, deletedAt: null,updatedBy:payload?.id } }
       );
       return res
         .status(200)
@@ -355,6 +357,7 @@ export const updateEquipmentCategory = async (req: Request, res: Response) => {
           maintenance_requirements,
           warranty,
           keyFeatures,
+          updatedBy:payload?.id,
         },
         { where: { id: id } }
       );
@@ -390,9 +393,10 @@ export const deleteEquipmentCategory = async (req: Request, res: Response) => {
       .json(createErrorResponse("RECORD_NOT_EXIT", "Record is not exit."));
   } else {
     try {
+      const payload = getPayloadFromToken(req);
       await equipmentCategory.update(
         { deletedAt: new Date() },
-        { where: { id: categoryId, deletedAt: null } }
+        { where: { id: categoryId, deletedAt: null,updatedBy:payload?.id } }
       );
       return res
         .status(200)
@@ -543,6 +547,7 @@ export const updateChemicalCategory = async (req: Request, res: Response) => {
           activeIngredient,
           applicationMethod,
           safetyPrecautions,
+          updatedBy:payload?.id
         },
         { where: { id: id } }
       );
@@ -578,9 +583,10 @@ export const deleteChemicalCatCategory = async (req: Request, res: Response) => 
       .json(createErrorResponse("RECORD_NOT_EXIT", "Record is not exit."));
   } else {
     try {
+      const payload = getPayloadFromToken(req);
       await chemicalCategory.update(
         { deletedAt: new Date() },
-        { where: { id: categoryId, deletedAt: null } }
+        { where: { id: categoryId, deletedAt: null, updatedBy:payload?.id } }
       );
       return res
         .status(200)
