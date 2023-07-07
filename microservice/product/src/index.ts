@@ -23,10 +23,10 @@ require("dotenv").config();
 const app = express();
 
 app.use(express.json());
-app.use("/product/admin", middlewareRoleManager("admin"), router);
-app.use("/product/pesticide", middlewareRoleManager("agricultural_chemicals"), chemicalRouter);
-app.use("/product/farmer", middlewareRoleManager("farmer"), farmerRoute);
-app.use("/product/equipment", middlewareRoleManager("equipment_manufacturers"), equipmentRouter);
+app.use("/product/admin", middlewareRoleManager(["admin"]), router);
+app.use("/product/pesticide", middlewareRoleManager(["agricultural_chemicals"]), chemicalRouter);
+app.use("/product/farmer", middlewareRoleManager(["farmer"]), farmerRoute);
+app.use("/product/equipment", middlewareRoleManager(["equipment_manufacturers"]), equipmentRouter);
 
 
 

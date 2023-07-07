@@ -4,13 +4,14 @@ const sequelize = require("./database/database");
 const jwt = require("jsonwebtoken");
 import User from "./model/user.model";
 import UserMeta from "./model/userMeta.model";
-const amqp = require("amqplib");
 import apiRouter from "./routes/api";
-import { colorLog } from "./utility/helper/helper";
+import { colorLog, middlewareRoleManager } from "./utility/helper/helper";
+import ProfileRouter from "./routes/profile.route";
+import migration from "./migrations";
+import bodyParser  from 'body-parser';
 
 require("dotenv").config();
 const app = express();
-app.use(express.json());
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3002"); // Adjust the allowed origin as needed
@@ -19,7 +20,11 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({ extended: true })); 
+
 app.use("/auth", apiRouter);
+app.use("/auth/profile", ProfileRouter);
 
 async function syncDatabase() {
   try {
@@ -30,6 +35,7 @@ async function syncDatabase() {
 
   try {
     await UserMeta.sync({ force: true });
+    migration();
   } catch (error) {
     console.log(
       colorLog("error while create sync with UserMeta table", "BgRed")

@@ -2,7 +2,8 @@
 import env from '../../environment/environment';
 const mysql = require('mysql2');
 
-////
+import { response, Request, Response, NextFunction } from "express";
+const jwt = require("jsonwebtoken");
 export async function createDbForService() {
   const connection = mysql.createConnection({
     host: env.DATABASE_HOST_NAME,
@@ -26,11 +27,6 @@ export async function createDbForService() {
     connection.end();
   });
 }
-
-
-// export function generateAccessToken(date:{name:string}) {
-//   return jwt.sign(username, env.TOKEN_SECRET, { expiresIn: '1800s' });
-// }
 
 
 export function createErrorResponse(code:string, message:string, details = {}) {
@@ -161,3 +157,42 @@ export function colorLog(val: any, color: string) {
 
   return response;
 }
+
+
+export const middlewareRoleManager = (accessFor: Array<string>) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (req.headers?.authorization) {
+      try {
+        const token = req.headers?.authorization.replace("Bearer ", "");
+        const decoded = jwt.verify(token, env.TOKEN_SECRET);
+        if (accessFor.includes(decoded?.role)) {
+          next();
+        } else {
+          return res
+            .status(401)
+            .json(
+              createErrorResponse(
+                "UNABLE_TO_AUTHORIZE",
+                "you are not authorize for this route"
+              )
+            );
+        }
+      } catch (error) {
+        return res
+          .status(401)
+          .json(
+            createErrorResponse("INVALID_TOKEN_PROVIDED", "Token is not valid")
+          );
+      }
+    } else {
+      return res
+        .status(401)
+        .json(
+          createErrorResponse(
+            "AUTHORIZE_TOKEN_REQUIRED",
+            "you are not authorize for this route"
+          )
+        );
+    }
+  };
+};

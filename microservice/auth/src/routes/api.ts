@@ -10,8 +10,4 @@ router.post('/user/signup', userSignup);
 router.post('/user/login', userLogin);
 router.post('/admin/signup', adminSignup);
 router.post('/admin/login', adminLogin);
-
-
-
-
 export default router;

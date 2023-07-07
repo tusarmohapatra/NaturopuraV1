@@ -30,21 +30,29 @@ export async function createDbForService() {
   });
 }
 
-export const middlewareRoleManager = (accessFor: string) => {
+export const middlewareRoleManager = (accessFor: Array<string>) => {
   return (req: Request, res: Response, next: NextFunction) => {
     if (req.headers?.authorization) {
-      const token = req.headers?.authorization.replace("Bearer ", "");
-      const decoded = jwt.verify(token, env.TOKEN_SECRET);
-      if (decoded?.role === accessFor) {
-        next();
-      } else {
+      try {
+        const token = req.headers?.authorization.replace("Bearer ", "");
+        const decoded = jwt.verify(token, env.TOKEN_SECRET);
+        if (accessFor.includes(decoded?.role)) {
+          next();
+        } else {
+          return res
+            .status(401)
+            .json(
+              createErrorResponse(
+                "UNABLE_TO_AUTHORIZE",
+                "you are not authorize for this route"
+              )
+            );
+        }
+      } catch (error) {
         return res
           .status(401)
           .json(
-            createErrorResponse(
-              "UNABLE_TO_AUTHORIZE",
-              "you are not authorize for this route"
-            )
+            createErrorResponse("INVALID_TOKEN_PROVIDED", "Token is not valid")
           );
       }
     } else {
@@ -52,13 +60,11 @@ export const middlewareRoleManager = (accessFor: string) => {
         .status(401)
         .json(
           createErrorResponse(
-            "UNABLE_TO_AUTHORIZE",
+            "AUTHORIZE_TOKEN_REQUIRED",
             "you are not authorize for this route"
           )
         );
     }
-
-    // Call next() to pass control to the next middleware or route handler
   };
 };
 
