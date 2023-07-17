@@ -196,3 +196,33 @@ export const middlewareRoleManager = (accessFor: Array<string>) => {
     }
   };
 };
+
+interface Person {
+  isActive: boolean ;
+  id: number;
+  firstName:string;
+  lastName:string;
+  role:string;
+  email:string;
+  iat:number;
+  exp:number;
+}
+
+export const getPayloadFromToken = (req: Request): Person  => {
+  if (req.headers?.authorization) {
+    const token = req.headers?.authorization.replace("Bearer ", "");
+    const decoded = jwt.verify(token, env.TOKEN_SECRET);
+    return decoded;
+  } else {
+    return {
+      isActive: true,
+      id: 0,
+      firstName: "",
+      lastName: "",
+      role: "",
+      email: "",
+      iat: 0,
+      exp: 0,
+    };
+  }
+};
