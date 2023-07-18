@@ -48,6 +48,10 @@ const equipmentCategory = sequelize.define('equipmentCategory', {
     type: DataTypes.DATE,
     allowNull: true
   },
+  updatedBy:{
+    type: DataTypes.INTEGER,
+    allowNull:true,
+   }
 });
 
 equipmentCategory.belongsTo(equipmentCategory, {foreignKey: 'parentCategory' });

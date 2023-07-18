@@ -10,7 +10,7 @@ apiEndpoints:
     paths: ['/auth/user/login','/auth/user/signup','/auth/admin/login','/auth/admin/signup','/auth/profile/*']
   static:
     host: localhost
-    paths: ['/data/countryCode','/auth/user/login']
+    paths: ['/data/countryCode','/data/productCategory','/data/equipmentCategory','/data/chemicalCategory']
   product:
     host: localhost
     paths: ['/product/admin/*','/product/pesticide/*','/product/farmer/*','/product/equipment/*']

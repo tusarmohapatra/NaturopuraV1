@@ -21,13 +21,13 @@ sequelize
 
 async function syncDatabase() {
   try {
-    await Address.sync({ force: true });
+    await Address.sync({ force: false });
   } catch (error) {
     console.log(colorLog('Waiting for user registered events...','FgRed'));
   }
 }
-syncDatabase();
 
+syncDatabase();
 
 async function establishConnection() {
   await consumeEvent()

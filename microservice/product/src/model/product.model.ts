@@ -59,6 +59,10 @@ const Product = sequelize.define('product', {
     type: DataTypes.DATE,
     allowNull: true
   },
+  updatedBy:{
+    type: DataTypes.INTEGER,
+    allowNull:true,
+   }
 });
 
 export default  Product;

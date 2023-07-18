@@ -82,6 +82,10 @@ const UserMeta = sequelize.define('userMeta', {
     type: DataTypes.BOOLEAN,
     allowNull: true,
   },
+  updatedBy:{
+    type: DataTypes.INTEGER,
+    allowNull:true,
+  },
   deletedAt: {
     type: DataTypes.DATE,
     allowNull: true

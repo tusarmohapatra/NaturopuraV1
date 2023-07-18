@@ -50,6 +50,10 @@ const chemicalCategory = sequelize.define('chemicalCategory', {
     type: DataTypes.DATE,
     allowNull: true
   },
+  updatedBy:{
+    type: DataTypes.INTEGER,
+    allowNull:true,
+   }
 });
 
 chemicalCategory.belongsTo(chemicalCategory, {foreignKey: 'parentCategory' });

@@ -24,6 +24,10 @@ const Image = sequelize.define('image', {
     type: DataTypes.DATE,
     allowNull: true
   },
+  updatedBy:{
+    type: DataTypes.INTEGER,
+    allowNull:true,
+   }
 });
 
 export default  Image;

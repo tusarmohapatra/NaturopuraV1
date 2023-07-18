@@ -31,6 +31,10 @@ const Review = sequelize.define('review', {
     type: DataTypes.DATE,
     allowNull: true
   },
+  updatedBy:{
+    type: DataTypes.INTEGER,
+    allowNull:true,
+   }
 });
 Review.belongsTo(Product, {foreignKey: 'productId' });
 export default  Review;

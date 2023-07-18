@@ -46,6 +46,10 @@ const Address = sequelize.define('address', {
     allowNull: false,
     defaultValue: 'user'
   },
+  updatedBy:{
+    type: DataTypes.INTEGER,
+    allowNull:true,
+   },
   deletedAt: {
     type: DataTypes.DATE,
     allowNull: true

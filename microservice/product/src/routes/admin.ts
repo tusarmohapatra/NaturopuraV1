@@ -1,15 +1,11 @@
 import { Router, Request, Response } from "express";
 import {
-  createCategory,
   createChemicalCategory,
-  createEquipmentCategory,
-  deleteCategory,
   deleteChemicalCatCategory,
-  deleteEquipmentCategory,
-  updateCategory,
   updateChemicalCategory,
-  updateEquipmentCategory,
-} from "../controller/category.controller";
+} from "../controller/chemical.controller";
+import { createCategory, deleteCategory, updateCategory } from "../controller/product.controller";
+import { createEquipmentCategory, deleteEquipmentCategory, updateEquipmentCategory } from "../controller/equipment.controller";
 
 const router: Router = Router();
 

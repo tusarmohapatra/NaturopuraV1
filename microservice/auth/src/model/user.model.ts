@@ -30,6 +30,10 @@ const User = sequelize.define('user', {
     allowNull: false,
     unique: true
   },
+  image:{
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   isActive: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
@@ -46,6 +50,10 @@ const User = sequelize.define('user', {
   walletAddress: {
     type: DataTypes.STRING,
     allowNull: false,
+  },
+  updatedBy:{
+   type: DataTypes.INTEGER,
+   allowNull:true,
   },
   deletedAt: {
     type: DataTypes.DATE,

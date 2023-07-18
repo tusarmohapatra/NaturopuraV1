@@ -41,6 +41,10 @@ const productCategory = sequelize.define('productCategory', {
     type: DataTypes.DATE,
     allowNull: true
   },
+  updatedBy:{
+    type: DataTypes.INTEGER,
+    allowNull:true,
+   }
 });
 productCategory.belongsTo(productCategory, {foreignKey: 'parentCategory' });
 export default  productCategory;

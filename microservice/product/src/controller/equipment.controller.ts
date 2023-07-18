@@ -1,63 +1,34 @@
 import { Request, Response } from "express";
-
 import {
   createErrorResponse,
   createSuccessResponse,
   getPayloadFromToken,
 } from "../utility/helper/helper";
-import productCategory from "../model/product.category";
+
+import equipmentCategory from "../model/equipment.category";
 
 const Joi = require("joi");
 
 
-
-export const createCategory = async (req: Request, res: Response) => {
+export const createEquipmentCategory = async (req: Request, res: Response) => {
     const {
       name,
       description,
-      recommendedStorageConditions,
-      shelfLifeIndDays,
-      harvestingSeason,
+      recommendedUse,
+      power_source,
+      maintenance_requirements,
+      warranty,
+      keyFeatures,
     } = req.body;
+  
     const schema = Joi.object({
       name: Joi.string().min(3).max(30).required(),
       description: Joi.string().min(3).max(250).required(),
-      recommendedStorageConditions: Joi.string()
-        .valid(
-          "coolAndDryPlace",
-          "refrigerated",
-          "roomTemperature",
-          "freezer",
-          "dryPantry",
-          "airtightContainer",
-          "keepAwayFromDirectSunlight",
-          "humidityControlled",
-          "storeInOriginalPackaging",
-          "avoidTemperatureFluctuations",
-          "doNotFreeze",
-          "storeInDarkPlace",
-          "keepUpright",
-          "handleWithCare"
-        )
-        .required(),
-      shelfLifeIndDays: Joi.number().required(),
-      harvestingSeason: Joi.string()
-        .valid(
-          "spring",
-          "summer",
-          "fall",
-          "winter",
-          "year-round",
-          "earlySpring",
-          "lateSpring",
-          "earlySummer",
-          "lateSummer",
-          "earlyFall",
-          "lateFall",
-          "earlyWinter",
-          "lateWinter"
-        )
-        .required(),
+      recommendedUse: Joi.string().required(),
+      power_source: Joi.string().valid("Electronic", "IC", "Manual").required(),
+      maintenance_requirements: Joi.string(),
+      keyFeatures: Joi.string(),
+      warranty: Joi.string(),
     });
   
     const { error, value } = schema.validate(req.body);
@@ -75,18 +46,22 @@ export const createCategory = async (req: Request, res: Response) => {
     } else {
       try {
         const payload = getPayloadFromToken(req);
-        const category = await productCategory.create({
+        const category = await equipmentCategory.create({
           name,
           description,
-          recommendedStorageConditions,
-          shelfLifeIndDays,
-          harvestingSeason,
+          recommendedUse,
+          power_source,
+          maintenance_requirements,
+          warranty,
+          keyFeatures,
           createdBy: payload.id,
         });
   
         return res
           .status(201)
-          .json(createSuccessResponse("category created successfully", ""));
+          .json(
+            createSuccessResponse("equipment category created successfully", "")
+          );
       } catch (error) {
         return res
           .status(500)
@@ -101,54 +76,28 @@ export const createCategory = async (req: Request, res: Response) => {
     }
   };
   
-  export const updateCategory = async (req: Request, res: Response) => {
+  export const updateEquipmentCategory = async (req: Request, res: Response) => {
     const {
       name,
       description,
-      recommendedStorageConditions,
-      shelfLifeIndDays,
-      harvestingSeason,
+      recommendedUse,
+      power_source,
+      maintenance_requirements,
+      warranty,
+      keyFeatures,
       id,
     } = req.body;
   
     const schema = Joi.object({
-      id: Joi.number().required(),
       name: Joi.string().min(3).max(30),
       description: Joi.string().min(3).max(250),
-      recommendedStorageConditions: Joi.string().valid(
-        "coolAndDryPlace",
-        "refrigerated",
-        "roomTemperature",
-        "freezer",
-        "dryPantry",
-        "airtightContainer",
-        "keepAwayFromDirectSunlight",
-        "humidityControlled",
-        "storeInOriginalPackaging",
-        "avoidTemperatureFluctuations",
-        "doNotFreeze",
-        "storeInDarkPlace",
-        "keepUpright",
-        "handleWithCare"
-      ),
-      shelfLifeIndDays: Joi.number(),
-      harvestingSeason: Joi.string().valid(
-        "spring",
-        "summer",
-        "fall",
-        "winter",
-        "year-round",
-        "earlySpring",
-        "lateSpring",
-        "earlySummer",
-        "lateSummer",
-        "earlyFall",
-        "lateFall",
-        "earlyWinter",
-        "lateWinter"
-      ),
+      recommendedUse: Joi.string(),
+      power_source: Joi.string().valid("Electronic", "IC", "Manual"),
+      maintenance_requirements: Joi.string(),
+      keyFeatures: Joi.string(),
+      warranty: Joi.string(),
+      id: Joi.number().required(),
     });
-  
     const { error, value } = schema.validate(req.body);
   
     if (error) {
@@ -162,7 +111,7 @@ export const createCategory = async (req: Request, res: Response) => {
           )
         );
     } else {
-      const category = await productCategory.findOne({
+      const category = await equipmentCategory.findOne({
         where: { id: id, deletedAt: null },
       });
       if (!category) {
@@ -173,27 +122,31 @@ export const createCategory = async (req: Request, res: Response) => {
   
       try {
         const payload = getPayloadFromToken(req);
-        await productCategory.update(
+        await equipmentCategory.update(
           {
             name,
             description,
-            recommendedStorageConditions,
-            shelfLifeIndDays,
-            harvestingSeason,
-            updatedBy:payload?.id
+            recommendedUse,
+            power_source,
+            maintenance_requirements,
+            warranty,
+            keyFeatures,
+            updatedBy:payload?.id,
           },
           { where: { id: id } }
         );
         return res
           .status(200)
-          .json(createSuccessResponse("category update successfully", ""));
+          .json(
+            createSuccessResponse("Equipment category update successfully.", "")
+          );
       } catch (error) {
         return res
           .status(500)
           .json(
             createErrorResponse(
               "UNABLE_TO_UPDATE_CATEGORY",
-              "cant able to update the table",
+              "Cant able to update the table.",
               {}
             )
           );
@@ -201,10 +154,10 @@ export const createCategory = async (req: Request, res: Response) => {
     }
   };
   
-  export const deleteCategory = async (req: Request, res: Response) => {
+  export const deleteEquipmentCategory = async (req: Request, res: Response) => {
     const categoryId = req.params.id;
   
-    const category = await productCategory.findOne({
+    const category = await equipmentCategory.findOne({
       where: { id: categoryId, deletedAt: null },
     });
   
@@ -215,13 +168,15 @@ export const createCategory = async (req: Request, res: Response) => {
     } else {
       try {
         const payload = getPayloadFromToken(req);
-        await productCategory.update(
+        await equipmentCategory.update(
           { deletedAt: new Date() },
           { where: { id: categoryId, deletedAt: null,updatedBy:payload?.id } }
         );
         return res
           .status(200)
-          .json(createSuccessResponse("category deleted successfully", ""));
+          .json(
+            createSuccessResponse("Equipment category deleted successfully", "")
+          );
       } catch (error) {
         return res
           .status(500)
@@ -235,3 +190,4 @@ export const createCategory = async (req: Request, res: Response) => {
       }
     }
   };
+  
