@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import {
+  colorLog,
   createErrorResponse,
   createSuccessResponse,
   getPayloadFromToken,
@@ -7,6 +8,7 @@ import {
 import User from "../model/user.model";
 import { publishUserUpdateEvent } from "../event/event";
 import UserMeta from "../model/userMeta.model";
+import productDb from "../database/productDb";
 const Joi = require("joi");
 
 export const adminProfile = async (req: any, res: Response) => {
@@ -48,12 +50,13 @@ export const adminProfile = async (req: any, res: Response) => {
   } else {
     try {
       const payload = getPayloadFromToken(req);
+      const user = await User.findOne({ where: { id: payload?.id } });
       await User.update(
         {
           firstName,
           lastName,
           email,
-          image: req.file.key,
+          image: req.file?.key ? req.file?.key : user.image,
           updatedBy: payload?.id.toString(),
         },
         { where: { id: payload?.id } }
@@ -129,12 +132,13 @@ export const userProfile = async (req: any, res: Response) => {
   } else {
     try {
       const payload = getPayloadFromToken(req);
+      const user = await User.findOne({ where: { id: payload?.id } });
       await User.update(
         {
           firstName,
           lastName,
           email,
-          image: req.file.key,
+          image: req.file?.key ? req.file?.key : user.image ,
           updatedBy: payload?.id.toString(),
         },
         { where: { id: payload?.id } }
@@ -200,7 +204,7 @@ export const farmerProfile = async (req: any, res: Response) => {
       return helpers.error("any.invalid");
     }
   };
-  
+
   const schema = Joi.object({
     firstName: Joi.string().required(),
     lastName: Joi.string().min(3).max(30),
@@ -217,6 +221,7 @@ export const farmerProfile = async (req: any, res: Response) => {
     farmingExperience: Joi.number().required(),
     preferredCommunicationMethod: Joi.string().custom(customArrayValidator, 'custom array validation'),
     productsProduce: Joi.string().custom(customArrayValidator, 'custom array validation'),
+    productCategories:Joi.string().custom(customArrayValidator, 'custom array validation'),
     productionCapacity: Joi.string(),
     governmentId:Joi.string().required(),
     farmLocation:Joi.string().required()
@@ -237,6 +242,21 @@ export const farmerProfile = async (req: any, res: Response) => {
   }
   const { error, value } = schema.validate(req.body);
 
+  const parsedArray = JSON.parse(productCategories);
+  const [results, metadata] = await productDb.query(`SELECT id FROM productCategories WHERE id IN(${parsedArray})`);
+
+  if(parsedArray.length !== results.length){
+    return res
+    .status(400)
+    .json(
+      createErrorResponse(
+        "INVALID_CATEGORY",
+        "invalid category provided.",
+        {}
+      )
+    );
+  }
+
   if (error) {
     return res
       .status(400)
@@ -250,17 +270,20 @@ export const farmerProfile = async (req: any, res: Response) => {
   } else {
     try {
       const payload = getPayloadFromToken(req);
+      const userMeta =   await UserMeta.findOne({ where: { userId: payload?.id } });
+      const user = await User.findOne({ where: { id: payload?.id } });
+
       await User.update(
         {
           firstName,
           lastName,
           email,
-          image: req.file.key,
+          image: req.file?.key ? req.file?.key : user.image,
           updatedBy: payload?.id.toString(),
         },
         { where: { id: payload?.id } }
       );
-  const userMeta =   await UserMeta.findOne({ where: { userId: payload?.id } });
+  
 
      if (userMeta) {
        await userMeta.update(
@@ -301,9 +324,7 @@ export const farmerProfile = async (req: any, res: Response) => {
       return res
         .status(200)
         .json(createSuccessResponse("Profile update successfully.", ""));
-    } catch (error) {
-      console.log(error);
-      
+    } catch (error) { 
       return res
         .status(500)
         .json(

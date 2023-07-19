@@ -13,6 +13,7 @@ import bodyParser  from 'body-parser';
 require("dotenv").config();
 const app = express();
 
+// Configure CORS headers
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3002"); // Adjust the allowed origin as needed
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
@@ -20,21 +21,24 @@ app.use((req, res, next) => {
   next();
 });
 
+// Set up body-parser middleware for parsing JSON and URL-encoded bodies
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true })); 
 
+// Set up routes
 app.use("/auth", apiRouter);
 app.use("/auth/profile", ProfileRouter);
 
+// Function to synchronize the database tables
 async function syncDatabase() {
   try {
-    await User.sync({ force: true });
+    await User.sync({ force: false });
   } catch (error) {
     console.log(colorLog("error while create sync with user table", "BgRed"));
   }
 
   try {
-    await UserMeta.sync({ force: true });
+    await UserMeta.sync({ force: false });
     migration();
   } catch (error) {
     console.log(
@@ -44,6 +48,7 @@ async function syncDatabase() {
 }
 syncDatabase();
 
+// Sync the sequelize instance with the database
 sequelize
   .sync()
   .then((result: any) => {

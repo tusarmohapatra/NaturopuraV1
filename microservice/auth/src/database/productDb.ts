@@ -4,7 +4,7 @@ import {colorLog} from '../utility/helper/helper';
 
 import env from '../environment/environment';
 
-const sequelize = new Sequelize(
+const productDb = new Sequelize(
   env.PRODUCT_SERVICE_DATABASE_NAME,
   env.PRODUCT_DATABASE_USER_NAME,
   env.PRODUCT_DATABASE_USER_PASSWORD,
@@ -14,9 +14,9 @@ const sequelize = new Sequelize(
   }
 );
 
-
+connectToDb();
 function connectToDb() {
-  sequelize
+  productDb
     .authenticate()
     .then(() => console.log(colorLog("Connection has been established successfully.", "BgGreen")))
     .catch((error: any) => {
@@ -24,4 +24,4 @@ function connectToDb() {
       console.error(error);
     });
 }
-module.exports = sequelize;
+export default productDb;
