@@ -1,4 +1,5 @@
 ///
+import productDb from '../../database/productDb';
 import env from '../../environment/environment';
 const mysql = require('mysql2');
 
@@ -165,7 +166,7 @@ export const middlewareRoleManager = (accessFor: Array<string>) => {
       try {
         const token = req.headers?.authorization.replace("Bearer ", "");
         const decoded = jwt.verify(token, env.TOKEN_SECRET);
-        if (accessFor.includes(decoded?.role)) {
+        if (accessFor.includes(decoded?.role) || accessFor.includes('all')) {
           next();
         } else {
           return res
@@ -224,5 +225,45 @@ export const getPayloadFromToken = (req: Request): Person  => {
       iat: 0,
       exp: 0,
     };
+  }
+};
+
+export const customArrayValidator = (value: any, helpers: any) => {
+  try {
+    const parsedArray = JSON.parse(value);
+
+    if (!Array.isArray(parsedArray)) {
+      return helpers.error("any.invalid");
+    }
+
+    return parsedArray;
+  } catch (error) {
+    return helpers.error("any.invalid");
+  }
+};
+
+
+
+
+export const checkCategory = async (
+  category: any,
+  res: Response,
+  db: String
+) => {
+  const parsedArray = JSON.parse(category);
+  const [results, metadata] = await productDb.query(
+    `SELECT id FROM ${db} WHERE id IN(${parsedArray})`
+  );
+
+  if (parsedArray.length !== results.length) {
+    return res
+      .status(400)
+      .json(
+        createErrorResponse(
+          "INVALID_CATEGORY",
+          "invalid category provided.",
+          {}
+        )
+      );
   }
 };

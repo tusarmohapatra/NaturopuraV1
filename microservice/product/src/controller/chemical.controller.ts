@@ -73,7 +73,7 @@ export const createChemicalCategory = async (req: Request, res: Response) => {
           createErrorResponse(
             "UNABLE_TO_CRETE_CATEGORY",
             "cant able to create the table",
-            {}
+            {error}
           )
         );
     }

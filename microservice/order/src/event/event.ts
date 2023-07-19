@@ -78,7 +78,7 @@ export async function consumeUserUpdateEvent() {
               state: address.state,
               postal_code: address.postal_code,
               country: address.country,
-              address_type: address.type,
+              address_type: 'user',
               updatedBy:address.user_id
             },
           { where: { userId:  address.user_id } }

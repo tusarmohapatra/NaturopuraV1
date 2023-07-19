@@ -52,12 +52,12 @@ sequelize
 
 async function syncDatabase() {
   try {
-    await Product.sync({ force: true });
-    await Review.sync({ force: true });
-    await Image.sync({ force: true });
-    await productCategory.sync({ force: true });
-    await equipmentCategory.sync({ force: true });
-    await chemicalCategory.sync({ force: true });
+    await Product.sync({ force: false });
+    await Review.sync({ force: false });
+    await Image.sync({ force: false });
+    await productCategory.sync({ force: false });
+    await equipmentCategory.sync({ force: false });
+    await chemicalCategory.sync({ force: false });
   } catch (error) {
     console.log(colorLog("Error while create table", "FgRed"));
   }

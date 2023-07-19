@@ -78,6 +78,14 @@ const UserMeta = sequelize.define('userMeta', {
     type: DataTypes.JSON,
     allowNull: true,
   },
+  chemicalCategories:{
+    type: DataTypes.JSON,
+    allowNull: true,
+  },
+  bio: {
+    type: DataTypes.STRING(500),
+    allowNull: true,
+  },
   deliveryOptions: {
     type: DataTypes.BOOLEAN,
     allowNull: true,

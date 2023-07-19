@@ -36,7 +36,7 @@ export const middlewareRoleManager = (accessFor: Array<string>) => {
       try {
         const token = req.headers?.authorization.replace("Bearer ", "");
         const decoded = jwt.verify(token, env.TOKEN_SECRET);
-        if (accessFor.includes(decoded?.role)) {
+        if (accessFor.includes(decoded?.role) || accessFor.includes('all')) {
           next();
         } else {
           return res
