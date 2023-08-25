@@ -64,7 +64,7 @@ export const userSignup = async (req: Request, res: Response) => {
             };
             return res.status(201).json(createSuccessResponse("successfully register.",isRemember
             ? jwt.sign(newCustomer, env.TOKEN_SECRET, { expiresIn: "48h" })
-            : "",{}));
+            : "",{...newCustomer,...{ expiresIn: "48h" }}));
             
           })
           .catch((err: any) => console.error(err.message));
@@ -115,7 +115,7 @@ export const userLogin = async (req: Request, res: Response) => {
           };
           return res.status(201).json(createSuccessResponse("successfully login.",jwt.sign(newCustomer, env.TOKEN_SECRET, {
             expiresIn: "48h",
-          }),{}));
+          }),{...newCustomer,...{ expiresIn: "48h" }}));
         } else {
          
           return res.status(400).json(createErrorResponse("SIGNATURE_NOT_MATCH", "Signature is not match.", {}));
@@ -173,7 +173,7 @@ export const adminLogin = async (req: Request, res: Response) => {
           };
           return res.status(201).json(createSuccessResponse("successfully login.",jwt.sign(newCustomer, env.TOKEN_SECRET, {
             expiresIn: "48h",
-          }),newCustomer));
+          }),{...newCustomer,...{ expiresIn: "48h" }}));
         } else {
           return res.status(400).json(createErrorResponse("SIGNATURE_NOT_MATCH", "Signature is not match.", {}));
         }
@@ -283,7 +283,7 @@ export const adminSignup = async (req: Request, res: Response) => {
             };
             return res.status(201).json(createSuccessResponse("successfully register.",isRemember
             ? jwt.sign(newCustomer, env.TOKEN_SECRET, { expiresIn: "48h" })
-            : "",newCustomer));
+            : "",{...newCustomer,...{ expiresIn: "48h" }}));
           })
           .catch((err: any) => console.error(err.message));
       }
