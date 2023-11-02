@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/ArjanAswal/nodejs-microservices/issues"
   },
-  "homepage": "https://github.com/ArjanAswal/nodejs-microservices#readme"
+  "homepage": "https://github.com/ArjanAswal/nodejs-microservices#readme",
+  "dependencies": {
+    "sequelize": "^6.32.1"
+  }
 }

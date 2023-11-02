@@ -1,0 +1,57 @@
+http:
+  port: 8080
+  host: localhost
+admin:
+  port: 9876
+  host: localhost
+apiEndpoints:
+  auth:
+    host: localhost
+    paths: ['/auth/user/login','/auth/user/signup','/auth/admin/login','/auth/admin/signup','/auth/profile/*']
+  static:
+    host: localhost
+    paths: ['/data/countryCode','/data/productCategory','/data/equipmentCategory','/data/chemicalCategory']
+  product:
+    host: localhost
+    paths: ['/product/admin/*','/product/pesticide/*','/product/farmer/*','/product/equipment/*']
+serviceEndpoints:
+  auth:
+   url: 'http://auth:3000'
+  static:
+   url: 'http://static:3000'
+  product:
+   url: 'http://product:3000'
+policies:
+  - basic-auth
+  - cors
+  - expression
+  - key-auth
+  - log
+  - oauth2
+  - proxy
+  - rate-limit
+pipelines:
+  default:
+    apiEndpoints:
+      - auth
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: auth 
+              changeOrigin: true
+  static:
+    apiEndpoints:
+      - static
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: static 
+              changeOrigin: true
+  product:
+    apiEndpoints:
+      - product
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: product 
+              changeOrigin: true
